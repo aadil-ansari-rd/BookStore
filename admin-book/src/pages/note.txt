@@ -1,0 +1,15 @@
+Book.find({}).skip(20).limit(10)
+
+let items  = []
+for (let number = 1 ;  nunber <=5 ; number++){
+    items.push(
+
+    )
+}
+
+
+
+
+button cancelButton in book add--> back to booklist page
+edit page
+pagination on center
