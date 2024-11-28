@@ -12,7 +12,7 @@ const uploader = multer({
     limits: { fileSize: 10 * 1024 * 1024},
 });
 
-router.post('/add/book',uploader.single("file"), (req,res)=>{
+router.post('/add/book',  uploader.single("file"), (req,res)=>{
     bookcontroller.addBook(req,res);
 })
 router.get('/books',(req,res)=>{
@@ -21,10 +21,10 @@ router.get('/books',(req,res)=>{
 router.get('/book/:id',(req,res)=>{
     bookcontroller.getBook(req,res)
 })
-router.put('/edit/book/:id',(req,res)=>{
+router.put('/edit/book/:id',uploader.single("bookImage") ,(req,res)=>{
     bookcontroller.editBook(req,res)
 })
-router.delete('/delete/book/:id',uploader.single("bookImage"),(req,res)=>{
+router.delete('/delete/book/:id',(req,res)=>{
     bookcontroller.deleteBook(req,res)
 })
 module.exports = router;

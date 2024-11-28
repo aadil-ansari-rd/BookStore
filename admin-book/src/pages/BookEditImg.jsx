@@ -175,7 +175,18 @@ function BookEditImg() {
 
       <Form.Group className="mb-3">
         <Form.Label>Select Image</Form.Label>
-        <Form.Control type="file" name="bookImage" onChange={handleChange} />
+        <Form.Control
+          type="file"
+          name="bookImage"
+          onChange={(e) =>
+            setBook((prev) => {
+              return {
+                ...prev,
+                [e.target.name]: e.target.files[0],
+              };
+            })
+          }
+        />
       </Form.Group>
 
       <Container>
