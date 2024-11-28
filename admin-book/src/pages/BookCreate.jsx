@@ -1,3 +1,5 @@
+//This code is only for the situation when you dont want to send file data to the 
+//backend server
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'

@@ -1,3 +1,5 @@
+//This code is only for the situation when you want to send file data to the 
+//backend server
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
@@ -6,6 +8,7 @@ import axios from "axios";
 
 function BookCreateImg() {
   const navigate = useNavigate(); //usenavigate is used for moving one page to another page
+
   let [bookName, setBookName] = useState("");
   let [authorName, setAuthorName] = useState("");
   let [language, setLanguage] = useState("");
@@ -20,18 +23,6 @@ function BookCreateImg() {
 
   function addBook() {
 
-    // First Method to send data
-    // let data ={
-    //     bookName: bookName,
-    //     authorName: authorName,
-    //     description: description,
-    //     price: price,
-    //     publisher: publisher,
-    //     isbnNo: isbnNo
-    // }
-
-
-    //Second method to send the data
     let formData = new FormData();
     formData.append("bookName", bookName);
     formData.append("authorName", authorName);

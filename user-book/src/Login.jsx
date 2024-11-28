@@ -1,11 +1,29 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useState } from "react";
+import axios from 'axios'
 const Login = () => {
   let [show, setShow] = useState(true);
   let [login, setLogin] = useState(true);
   let [signup, setSignup] = useState(false);
-  let [title ,setTitle]= useState("Login")
+  let [title ,setTitle]= useState("Login") 
+  let [user, setUser] = useState({
+    firstName : '',
+    lastName : '',
+    mobileNo : '',
+    email : '',
+    password : ''
+  })
+  function handleChange(e) {
+    let name = e.target.name;
+    let value = e.target.value;
+    setBook((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }
   const handleClose = () => {
     setShow(false);
     window.location.reload(); //to refresh the page
@@ -19,6 +37,17 @@ const Login = () => {
     setLogin(true)
     setSignup(false)
     setTitle("Login")
+  }
+  function addUser(){
+    axios({
+      url : 'http://localhost:3000/add/user',
+      method : 'post',
+      data : user
+    }).then((res)=>{
+      console.log(res)
+    }).catch((err){
+      console.log(err)
+    })
   }
   return (
     <Modal show={show} onHide={handleClose}>
@@ -39,7 +68,7 @@ const Login = () => {
             <Button varient="dark">Login</Button>
             <p>
               Don't have account{" "}
-              <span style={{ marginLeft: "10px" }} onClick={showSignUpModal}>
+              <span style={{ marginLeft: "10px" , color : "blue" }} onClick={showSignUpModal}>
                 Signup
               </span>
             </p>
@@ -49,33 +78,33 @@ const Login = () => {
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>First Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter First Name"></Form.Control>
+              <Form.Control type="text" onChange={handleChange} name="firstName" placeholder="Enter First Name"></Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Last Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Last Name"></Form.Control>
+              <Form.Control type="text" onChange={handleChange} name="lastName" placeholder="Enter Last Name"></Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Mobile No</Form.Label>
-              <Form.Control type="text" placeholder="Enter Mobile No"></Form.Control>
+              <Form.Control type="text"onChange={handleChange} name="mobileNo" placeholder="Enter Mobile No"></Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="text" placeholder="Enter Email"></Form.Control>
+              <Form.Control type="text" onChange={handleChange} name="email" placeholder="Enter Email"></Form.Control>
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="text" placeholder="Enter Password"></Form.Control>
+              <Form.Control type="text" onChange={handleChange} name="password" placeholder="Enter Password"></Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label> Confirm Password</Form.Label>
-              <Form.Control type="text" placeholder="Confirm Password"></Form.Control>
+              <Form.Control type="text" name="confirmPassword" placeholder="Confirm Password"></Form.Control>
             </Form.Group>
-            <Button varient="dark">Signup</Button>
+            <Button varient="dark" onClick={addUser}>Signup</Button>
             <p>
               Already has an account 
-              <span style={{ marginLeft: "10px" }} onClick={showLoginModal}>
+              <span style={{ marginLeft: "10px" , color : "blue" }} onClick={showLoginModal}>
                 Login
               </span>
             </p>

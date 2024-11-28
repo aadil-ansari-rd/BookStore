@@ -1,3 +1,6 @@
+//This code is only for the situation when you want an edit page and you dont want
+//to send file data to the backend server
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Form, Button, Container } from "react-bootstrap";

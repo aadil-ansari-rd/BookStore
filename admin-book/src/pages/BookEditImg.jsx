@@ -1,70 +1,58 @@
-import { useEffect } from "react";
-import { Form, Button, Container } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+//This code is only for the situation when you want an edit page and you also want
+//to send file data to the backend server
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
-
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 function BookEditImg() {
-  let [book, setBook] = useState({
-    bookName: "",
-    authorName: "",
-    language: "",
-    shortDescription: "",
-    description: "",
-    price: 0,
-    bookStatus: "",
-    quantity: 0,
-    publisher: "",
-    isbnNo: "",
-    bookImage: "",
-  });
+  const [book, setBook] = useState({});
+  const [file, setFile] = useState(null);
 
-  let navigate = useNavigate();
-  let params = useParams();
-  let id = params.id;
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
-    axios({
-      url: "http://localhost:3000/book/" + id,
-      method: "get",
-    })
+    axios.get(`http://localhost:3000/book/${id}`)
       .then((res) => {
-        //console.log(res);
         setBook(res.data.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
-  }, [params]);
+  }, [id]);
 
   function handleChange(e) {
-    let name = e.target.name;
-    let value = e.target.value;
-    setBook((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    const { name, value } = e.target;
+    setBook((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   }
 
   function editBook() {
-    axios({
-      url: "http://localhost:3000/edit/book/" + id,
-      method: "put",
-      data: book,
-      header: {
-        "content-type": "multipart/form-data",
-      },
-    })
+    const formData = new FormData();
+
+    for (const key in book) {
+      formData.append(key, book[key]);
+    }
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    axios.put(`http://localhost:3000/edit/book/${id}`, formData)
       .then((res) => {
         console.log(res);
         navigate("/books");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }
+
   return (
     <Form>
       <Form.Group className="mb-3">
@@ -72,29 +60,29 @@ function BookEditImg() {
         <Form.Control
           type="text"
           name="bookName"
-          value={book.bookName}
+          value={book.bookName || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
-      <Form.Group className="mb-3">
+ 
+     <Form.Group className="mb-3">
         <Form.Label>Author Name</Form.Label>
         <Form.Control
           type="text"
           name="authorName"
-          value={book.authorName}
+          value={book.authorName || ""}
           onChange={handleChange}
         />
       </Form.Group>
 
+      
       <Form.Group className="mb-3">
         <Form.Label>Language</Form.Label>
         <Form.Select
-          onChange={handleChange}
-          aria-label="Select Language"
           name="language"
+          value={book.language || ""}
+          onChange={handleChange}
         >
-          <option value={book.language}>{book.language}</option>
           <option value="Hindi">Hindi</option>
           <option value="English">English</option>
         </Form.Select>
@@ -105,87 +93,70 @@ function BookEditImg() {
         <Form.Control
           type="text"
           name="shortDescription"
-          value={book.shortDescription}
+          value={book.shortDescription || ""}
           onChange={handleChange}
         />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
+      </Form.Group><Form.Group className="mb-3">
         <Form.Label>Description</Form.Label>
         <Form.Control
-          type="textarea"
+          type="text"
           name="description"
-          value={book.description}
+          value={book.description || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group className="mb-3">
         <Form.Label>Price</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="price"
-          value={book.price}
+          value={book.price || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group className="mb-3">
-        <Form.Label>Book Staus</Form.Label>
+        <Form.Label>Book Status</Form.Label>
         <Form.Select
-          onChange={handleChange}
-          aria-label="Select Language"
           name="bookStatus"
+          value={book.bookStaus|| ""}
+          onChange={handleChange}
         >
-          <option value={book.bookStatus}>{book.bookStatus}</option>
-          <option value="New Book">New Book</option>
-          <option value="Second Hand Book">Second hand Book</option>
+          <option value="First Hand">First Hand</option>
+          <option value="Second Hand">Second Hand</option>
         </Form.Select>
       </Form.Group>
-
       <Form.Group className="mb-3">
         <Form.Label>Quantity</Form.Label>
         <Form.Control
-          type="number"
+          type="text"
           name="quantity"
-          value={book.quantity}
+          value={book.quantity || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group className="mb-3">
         <Form.Label>Publisher</Form.Label>
         <Form.Control
           type="text"
           name="publisher"
-          value={book.publisher}
+          value={book.publisher || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group className="mb-3">
         <Form.Label>ISBN No</Form.Label>
         <Form.Control
           type="text"
           name="isbnNo"
-          value={book.isbnNo}
+          value={book.isbnNo || ""}
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group className="mb-3">
         <Form.Label>Select Image</Form.Label>
         <Form.Control
           type="file"
-          name="bookImage"
-          onChange={(e) =>
-            setBook((prev) => {
-              return {
-                ...prev,
-                [e.target.name]: e.target.files[0],
-              };
-            })
-          }
+          onChange={(e) => setFile(e.target.files[0])}
         />
       </Form.Group>
 
@@ -197,4 +168,5 @@ function BookEditImg() {
     </Form>
   );
 }
+
 export default BookEditImg;
