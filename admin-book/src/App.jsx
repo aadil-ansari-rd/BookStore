@@ -8,6 +8,7 @@ import BookEdit from "./pages/BookEdit";
 import Sidebarmenu from "./Sidebarmenu";
 import ViewBook from "./pages/ViewBook";
 import BookEditImg from "./pages/BookEditImg";
+import UserList from "./pages/UserList";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/books" element={<BookList></BookList>}></Route>
           <Route path="/edit/book/:id" element={<BookEditImg></BookEditImg>}></Route>
           <Route path="/view/book/:id" element={<ViewBook></ViewBook>}></Route>
+          <Route path="/users" element={<UserList></UserList>}></Route>
         </Routes>
       </Sidebarmenu>
     </BrowserRouter>

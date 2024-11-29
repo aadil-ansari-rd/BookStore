@@ -12,6 +12,13 @@ const uploader = multer({
     limits: { fileSize: 10 * 1024 * 1024},
 });
 
-router.post('/add/book' , (req,res)=>{
-    
+router.post('/add/user' , (req,res)=>{
+    usercontroller.addUser(req,res);
 })
+router.get('/users', (req,res)=>{
+    usercontroller.getUsers(req,res);
+})
+
+
+
+module.exports = router

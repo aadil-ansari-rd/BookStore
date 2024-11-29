@@ -24,6 +24,16 @@ function Sidebarmenu({ children }) {
                   <span className="ms-2">Manage Book</span>
                 </a>
               </li>
+              <li className="nav-item text-white fs-4 my-1">
+                <a
+                  href="/users"
+                  className="nav-link text-white fs-5"
+                  aria-current="page"
+                >
+                  <i class="bi bi-people"></i>
+                  <span className="ms-2">Manage Users</span>
+                </a>
+              </li>
               <li className="nav-item text-w000000000000000000000000hite fs-4 my-1">
                 <a
                   href="/dashboard"
